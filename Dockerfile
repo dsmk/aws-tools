@@ -13,6 +13,5 @@ RUN set -ex; \
       python;
 
 RUN pip install --upgrade \
+      pip \
       aws-shell;
-
-ENTRYPOINT ["/bin/bash"]
