@@ -1,0 +1,9 @@
+version: "3.5"
+
+services: 
+  aws:
+    build: .
+    volumes:
+      - ./.aws:/root/.aws
+      - ./code:/code
+    working_dir: /code
