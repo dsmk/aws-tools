@@ -12,12 +12,16 @@ RUN set -ex; \
       jq \
       groff \
       py-pip \
-      python;
+      python \
+      nodejs;
 
 # Install aws-shell (which also install aws-cli)
 RUN pip install --upgrade \
       pip \
       aws-shell;
+
+# Install cwtail
+RUN npm install -g cwtail;
 
 # Install ecs-cli
 RUN curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest && chmod u+x /usr/local/bin/ecs-cli
