@@ -9,6 +9,7 @@ RUN set -ex; \
       bash \
       less \
       curl \
+      git \
       jq \
       groff \
       py-pip \
@@ -18,7 +19,8 @@ RUN set -ex; \
 # Install aws-shell (which also install aws-cli)
 RUN pip install --upgrade \
       pip \
-      aws-shell;
+      aws-shell \
+      awsebcli;
 
 # Install cwtail
 RUN npm install -g cwtail;
