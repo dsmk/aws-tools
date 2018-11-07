@@ -26,3 +26,6 @@ RUN pip install --upgrade \
 
 # Install ecs-cli
 RUN curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest && chmod u+x /usr/local/bin/ecs-cli
+
+# Add aws cli command completion
+RUN echo "complete -C '/usr/bin/aws_completer' aws" >> ~/.bashrc
