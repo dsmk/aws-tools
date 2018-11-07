@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 # Configure less
 ENV PAGER="less -r"
@@ -14,7 +14,9 @@ RUN set -ex; \
       groff \
       py-pip \
       python \
-      nodejs;
+      nodejs \
+      npm; \
+    npm install -g npm;
 
 # Install aws-shell (which also install aws-cli)
 RUN pip install --upgrade \
