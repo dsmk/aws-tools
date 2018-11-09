@@ -32,3 +32,5 @@ RUN echo "complete -C '/usr/bin/aws_completer' aws" >> ~/.bashrc
 
 RUN mkdir /code
 WORKDIR /code
+
+CMD [ "aws-shell" ]
