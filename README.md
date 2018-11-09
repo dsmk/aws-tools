@@ -6,14 +6,14 @@
 
   ```
   docker run --rm -it --volume "/Users/<user>/.aws:/root/.aws" --volume "$(pwd):/pwd" \
-    -w "/pwd" carlosesilva/aws-tools-docker
+    -w "/pwd" carlosesilva/aws-tools
   ```
 
 - Open bash with a specific aws profile:
 
   ```
   docker run --rm -it --volume "/Users/<user>/.aws:/root/.aws" --volume "$(pwd):/pwd" \
-    -w "/pwd" -e AWS_PROFILE=<aws_profile> carlosesilva/aws-tools-docker /bin/bash
+    -w "/pwd" -e AWS_PROFILE=<aws_profile> carlosesilva/aws-tools /bin/bash
   ```
 
 ## Includes
