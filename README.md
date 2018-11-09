@@ -17,6 +17,14 @@
     carlosesilva/aws-tools /bin/bash
   ```
 
+- Persist the the shell history and other things across runs:
+
+  ```
+  docker run --rm -it --volume aws-tools:/root \
+    --volume "$HOME/.aws:/root/.aws" --volume "$(pwd):/code" \
+    carlosesilva/aws-tools /bin/bash
+  ```
+
 ## Includes
 
 ### AWS
