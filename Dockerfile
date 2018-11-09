@@ -29,3 +29,6 @@ RUN curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-c
 
 # Add aws cli command completion
 RUN echo "complete -C '/usr/bin/aws_completer' aws" >> ~/.bashrc
+
+RUN mkdir /code
+WORKDIR /code

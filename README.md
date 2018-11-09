@@ -5,15 +5,16 @@
 - Open aws-shell with default aws profile:
 
   ```
-  docker run --rm -it --volume "/Users/<user>/.aws:/root/.aws" --volume "$(pwd):/pwd" \
-    -w "/pwd" carlosesilva/aws-tools
+  docker run --rm -it --volume "$HOME/.aws:/root/.aws" \
+    --volume "$(pwd):/code" carlosesilva/aws-tools
   ```
 
 - Open bash with a specific aws profile:
 
   ```
-  docker run --rm -it --volume "/Users/<user>/.aws:/root/.aws" --volume "$(pwd):/pwd" \
-    -w "/pwd" -e AWS_PROFILE=<aws_profile> carlosesilva/aws-tools /bin/bash
+  docker run --rm -it --volume "$HOME/.aws:/root/.aws" \
+    --volume "$(pwd):/code" -e AWS_PROFILE=<aws_profile> \
+    carlosesilva/aws-tools /bin/bash
   ```
 
 ## Includes
