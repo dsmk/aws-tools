@@ -1,3 +1,2 @@
 .vscode
-.aws
 docker-compose.override.yml
