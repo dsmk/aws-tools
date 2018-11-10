@@ -1,4 +1,5 @@
 # AWS CLI Tools
+A docker image for running AWS CLI commands.
 
 ## Usage
 
