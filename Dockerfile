@@ -9,6 +9,7 @@ RUN set -ex; \
       bash \
       less \
       curl \
+      zip \
       git \
       jq \
       groff \
