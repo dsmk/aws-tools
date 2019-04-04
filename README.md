@@ -47,6 +47,12 @@ docker run --rm -it ^
 bostonuniversity/aws-tools /bin/bash
 ```
 
+### Powershell
+
+```powershell
+docker run --rm -it --volume ${PWD}:/code --volume C:\Some\Temporary\Directory:/root/.aws --volume aws-tools:/root bostonuniversity/aws-tools /bin/bash
+```
+
 ## Includes
 
 ### AWS
