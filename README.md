@@ -12,7 +12,7 @@ A docker image for running AWS CLI commands.
   docker run --rm -it \
     --volume "$HOME/.aws:/root/.aws" \
     --volume "$(pwd):/code" \
-    carlosesilva/aws-tools
+    bostonuniversity/aws-tools
   ```
 
 - Open bash with a specific aws profile:
@@ -22,7 +22,7 @@ A docker image for running AWS CLI commands.
     --volume "$HOME/.aws:/root/.aws" \
     --volume "$(pwd):/code" \
     -e AWS_PROFILE=<aws_profile> \
-    carlosesilva/aws-tools /bin/bash
+    bostonuniversity/aws-tools /bin/bash
   ```
 
 - Persist the the shell history and other things across runs:
@@ -32,7 +32,7 @@ A docker image for running AWS CLI commands.
     --volume aws-tools:/root \
     --volume "$HOME/.aws:/root/.aws" \
     --volume "$(pwd):/code" \
-    carlosesilva/aws-tools /bin/bash
+    bostonuniversity/aws-tools /bin/bash
   ```
 
 ### Windows CMD
