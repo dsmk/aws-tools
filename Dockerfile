@@ -4,6 +4,7 @@ FROM alpine:3.8
 ENV PAGER="less -r"
 ENV AWS_REGION="us-east-1"
 ENV AWS_OUTPUT_FORMAT="json"
+ENV AWS_LOGIN_URL="https://www.bu.edu/awslogin"
 
 # Install required packages
 RUN set -ex; \

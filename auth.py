@@ -48,7 +48,7 @@ async def main():
         args=['--no-sandbox', '--disable-gpu']
     )
     page = await browser.newPage()
-    await page.goto('http://bu.edu/awslogin')
+    await page.goto(os.environ.get('AWS_LOGIN_URL'))
 
     print("Username: ", end='')
     username = input()
