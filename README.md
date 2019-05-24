@@ -47,7 +47,7 @@ docker run --rm -it ^
 bostonuniversity/aws-tools /bin/bash
 ```
 
-### Powershell
+### PowerShell
 
 ```powershell
 docker run --rm -it --volume ${PWD}:/code --volume C:\Some\Temporary\Directory:/root/.aws --volume aws-tools:/root bostonuniversity/aws-tools /bin/bash
@@ -57,20 +57,22 @@ docker run --rm -it --volume ${PWD}:/code --volume C:\Some\Temporary\Directory:/
 
 ### AWS
 
-- aws-cli
-- aws-shell
-- awsebcli
-- ecs-cli
+- `aws-cli`
+- `aws-shell`
+- `awsebcli`
+- `ecs-cli`
 
 ### Other
 
-- bash
-- less
-- curl
-- git
-- jq
-- groff
-- py-pip
-- python
-- nodejs
-- npm
+- `bash`
+- `less`
+- `curl`
+- `git`
+- `jq`
+- `groff`
+- `py-pip`
+- `python`
+- `python3`
+- `nodejs`
+- `npm`
+- `chromium`
