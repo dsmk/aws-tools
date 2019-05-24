@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 import getpass
 import time
 import os
+import sys
 import asyncio
 from pyppeteer import launch
 
