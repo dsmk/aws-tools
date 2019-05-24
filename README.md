@@ -53,6 +53,14 @@ bostonuniversity/aws-tools /bin/bash
 docker run --rm -it --volume ${PWD}:/code --volume C:\Some\Temporary\Directory:/root/.aws --volume aws-tools:/root bostonuniversity/aws-tools /bin/bash
 ```
 
+## CLI for accounts with federated access
+
+You can use this image too access shibboleth-protected accounts (with Duo 2FA too).
+To create a temporary session, just run `shib-auth` inside the container.
+This session will only be available for a few hours but you can alway run that
+command again to create a new one.
+
+
 ## Includes
 
 ### AWS
