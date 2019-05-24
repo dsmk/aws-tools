@@ -60,7 +60,6 @@ To create a temporary session, just run `shib-auth` inside the container.
 This session will only be available for a few hours but you can alway run that
 command again to create a new one.
 
-
 ## Includes
 
 ### AWS
