@@ -47,7 +47,7 @@ docker run --rm -it ^
 bostonuniversity/aws-tools /bin/bash
 ```
 
-### Powershell
+### PowerShell
 
 ```powershell
 docker run --rm -it --volume ${PWD}:/code --volume C:\Some\Temporary\Directory:/root/.aws --volume aws-tools:/root bostonuniversity/aws-tools /bin/bash
@@ -59,6 +59,14 @@ You can use this image too access shibboleth-protected accounts (with Duo 2FA to
 To create a temporary session, just run `shib-auth` inside the container.
 This session will only be available for a few hours but you can alway run that
 command again to create a new one.
+
+You can modify these environment variables to fine-tune for your own case:
+
+Variable name        | Default value
+---------------------|------------------------------
+AWS_REGION           | `us-east-1`
+AWS_OUTPUT_FORMAT    | `json`
+AWS_LOGIN_URL        | `https://www.bu.edu/awslogin`
 
 ## Includes
 
