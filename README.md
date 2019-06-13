@@ -72,20 +72,38 @@ AWS_LOGIN_URL        | `https://www.bu.edu/awslogin`
 
 ### AWS
 
-- aws-cli
-- aws-shell
-- awsebcli
-- ecs-cli
+- `aws-cli`
+- `aws-shell`
+- `awsebcli`
+- `ecs-cli`
 
 ### Other
 
-- bash
-- less
-- curl
-- git
-- jq
-- groff
-- py-pip
-- python
-- nodejs
-- npm
+- `bash`
+- `less`
+- `curl`
+- `git`
+- `jq`
+- `groff`
+- `py-pip`
+- `python`
+- `python3`
+- `nodejs`
+- `npm`
+- `chromium`
+
+## Development
+
+To troubleshoot or add new features to this image, use `docker-compose`.
+
+The first step is to build the image locally:
+
+```bash
+docker-compose build
+```
+
+Then, you can run the container with bash:
+
+```bash
+docker-compose run --rm aws bash
+```
