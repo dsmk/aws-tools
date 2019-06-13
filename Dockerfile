@@ -45,5 +45,7 @@ WORKDIR /code
 RUN mkdir /aws-auth
 ADD auth.py /aws-auth/
 ADD shib-auth /usr/local/bin/
+ADD entrypoint.sh /usr/local/bin/
 
+ENTRYPOINT [ "entrypoint.sh" ]
 CMD [ "aws-shell" ]
