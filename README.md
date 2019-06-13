@@ -76,3 +76,19 @@ docker run --rm -it --volume ${PWD}:/code --volume C:\Some\Temporary\Directory:/
 - `nodejs`
 - `npm`
 - `chromium`
+
+## Development
+
+To troubleshoot or add new features to this image, use `docker-compose`.
+
+The first step is to build the image locally:
+
+```bash
+docker-compose build
+```
+
+Then, you can run the container with bash:
+
+```bash
+docker-compose run --rm aws bash
+```
