@@ -4,6 +4,5 @@ services:
   aws:
     build: .
     volumes:
-      - ./auth.py:/aws-auth/auth.py
-      - ./shib-auth:/usr/local/bin/shib-auth
-      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - ./aws-auth/:/aws-auth/
+      - ./bin/:/usr/local/bin/
