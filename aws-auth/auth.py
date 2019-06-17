@@ -11,6 +11,19 @@ import sys
 import asyncio
 from pyppeteer import launch
 
+async def basic_auth(page):
+    print("Username: ", end='')
+    username = input()
+    password = getpass.getpass()
+    print('')
+
+    await page.focus('#j_username')
+    await page.keyboard.type(username)
+    await page.focus('#j_password')
+    await page.keyboard.type(password)
+    await page.evaluate("document.querySelector('button[type=submit]').click()")
+    await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
+
 async def main():
     # region: The default AWS region that this script will connect
     # to for all API calls
@@ -51,17 +64,13 @@ async def main():
     page = await browser.newPage()
     await page.goto(os.environ.get('AWS_LOGIN_URL'))
 
-    print("Username: ", end='')
-    username = input()
-    password = getpass.getpass()
-    print('')
+    while await page.querySelector('#j_username'):
+        error = await page.querySelector('.error-box')
+        if error:
+            error_text = await page.evaluate('(error) => error.textContent', error)
+            print(error_text)
 
-    await page.focus('#j_username')
-    await page.keyboard.type(username)
-    await page.focus('#j_password')
-    await page.keyboard.type(password)
-    await page.evaluate("document.querySelector('button[type=submit]').click()")
-    time.sleep(5)
+        await basic_auth(page)
 
     print('The "push" command was sent to your phone by Duo. You have about 60 seconds to react.')
 
