@@ -12,6 +12,11 @@ import asyncio
 from pyppeteer import launch
 
 async def basic_auth(page):
+    error = await page.querySelector('.error-box')
+    if error:
+        error_text = await page.evaluate('(error) => error.textContent', error)
+        print(error_text)
+
     print("Username: ", end='')
     username = input()
     password = getpass.getpass()
@@ -65,11 +70,6 @@ async def main():
     await page.goto(os.environ.get('AWS_LOGIN_URL'))
 
     while await page.querySelector('#j_username'):
-        error = await page.querySelector('.error-box')
-        if error:
-            error_text = await page.evaluate('(error) => error.textContent', error)
-            print(error_text)
-
         await basic_auth(page)
 
     print('The "push" command was sent to your phone by Duo. You have about 60 seconds to react.')
