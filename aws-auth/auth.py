@@ -59,7 +59,7 @@ async def duo_auth(page):
 async def duo_wait(page):
     duo = await get_duo(page)
 
-    await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
+    await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 60000 })
 
 async def main():
     # region: The default AWS region that this script will connect
