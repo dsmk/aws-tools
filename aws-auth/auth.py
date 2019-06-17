@@ -10,6 +10,7 @@ import os
 import sys
 import asyncio
 from pyppeteer import launch
+from pyppeteer.errors import TimeoutError, NetworkError
 
 async def basic_auth(page):
     error = await page.querySelector('.error-box')
@@ -27,6 +28,37 @@ async def basic_auth(page):
     await page.focus('#j_password')
     await page.keyboard.type(password)
     await page.evaluate("document.querySelector('button[type=submit]').click()")
+    await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
+
+async def get_duo(page):
+    res = await page._client.send("Page.getFrameTree")
+    childFrames = res["frameTree"]["childFrames"]
+    duo_id = next(
+        frame["frame"]["id"]
+        for frame in childFrames
+        if "duosecurity.com" in frame["frame"]["url"]
+    )
+
+    duo = page._frameManager.frame(duo_id)
+
+    message = await duo.querySelector('#messages-view')
+    if message:
+        message_text = await duo.evaluate('(message) => message.textContent', message)
+        print(message_text)
+
+    return duo
+
+async def duo_auth(page):
+    duo = await get_duo(page)
+    
+    # Click the first available button - should be "Send Me a Push"
+    await duo.evaluate("document.querySelector('button.auth-button').click()")
+    time.sleep(2)
+    await duo_wait(page)
+
+async def duo_wait(page):
+    duo = await get_duo(page)
+
     await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
 
 async def main():
@@ -69,28 +101,33 @@ async def main():
     page = await browser.newPage()
     await page.goto(os.environ.get('AWS_LOGIN_URL'))
 
+    duo_sent = False
+
     while await page.querySelector('#j_username'):
         await basic_auth(page)
 
-    print('The "push" command was sent to your phone by Duo. You have about 60 seconds to react.')
+    while await page.querySelector('#duo_iframe'):
+        try:
+            if not duo_sent:
+                duo_sent = True
+                await duo_auth(page)
+            else:
+                await duo_wait(page)
+        except TimeoutError:
+            pass
+        except NetworkError:
+            pass
+        except:
+            print('Unidentified error, check screenshot')
+            await page.screenshot({'path': 'error.png'})
+            await browser.close()
+            exit()
 
-    res = await page._client.send("Page.getFrameTree")
-    childFrames = res["frameTree"]["childFrames"]
-    duo_id = next(
-        frame["frame"]["id"]
-        for frame in childFrames
-        if "duosecurity.com" in frame["frame"]["url"]
-    )
-
-    duo = page._frameManager.frame(duo_id)
-    await duo.evaluate("document.querySelector('button').click()")
-    await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 60000 })
 
     samlElement = await page.waitForSelector('input[name=SAMLResponse]')
     samlValueProperty = await samlElement.getProperty('value')
     samlValue = await samlValueProperty.jsonValue()
 
-    # await page.screenshot({'path': 'example.png'})
     await browser.close()
 
     # Overwrite and delete the credential variables, just for safety
