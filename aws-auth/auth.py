@@ -9,6 +9,7 @@ import time
 import os
 import sys
 import asyncio
+import re
 from pyppeteer import launch
 from pyppeteer.errors import TimeoutError, NetworkError
 
@@ -30,6 +31,15 @@ async def basic_auth(page):
     await page.evaluate("document.querySelector('button[type=submit]').click()")
     await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
 
+async def get_duo_message(duo):
+    message = await duo.querySelector('#messages-view')
+    if message:
+        message_text = await duo.evaluate('(message) => message.textContent', message)
+        non_whitespace = re.search('[^\s]', message_text)
+        if non_whitespace:
+            return message_text
+    return ''
+
 async def get_duo(page):
     res = await page._client.send("Page.getFrameTree")
     childFrames = res["frameTree"]["childFrames"]
@@ -41,16 +51,15 @@ async def get_duo(page):
 
     duo = page._frameManager.frame(duo_id)
 
-    message = await duo.querySelector('#messages-view')
-    if message:
-        message_text = await duo.evaluate('(message) => message.textContent', message)
-        print(message_text)
-
     return duo
 
 async def duo_auth(page):
     duo = await get_duo(page)
-    
+
+    message = await get_duo_message(duo)
+    if message:
+        print(message)
+
     # Click the first available button - should be "Send Me a Push"
     await duo.evaluate("document.querySelector('button.auth-button').click()")
     time.sleep(2)
