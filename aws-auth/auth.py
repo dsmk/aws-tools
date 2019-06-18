@@ -65,10 +65,21 @@ async def duo_auth(page):
     time.sleep(2)
     await duo_wait(page)
 
-async def duo_wait(page):
+async def duo_wait(page, last_message=''):
+    if not await page.querySelector('#duo_iframe'):
+        return
+
     duo = await get_duo(page)
 
-    await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
+    message = await get_duo_message(duo)
+    if message and message != last_message:
+        print(message)
+    last_message = message
+
+    try:
+        await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 3000 })
+    except TimeoutError:
+        await duo_wait(page, last_message)
 
 async def main():
     # region: The default AWS region that this script will connect
@@ -110,18 +121,12 @@ async def main():
     page = await browser.newPage()
     await page.goto(os.environ.get('AWS_LOGIN_URL'))
 
-    duo_sent = False
-
     while await page.querySelector('#j_username'):
         await basic_auth(page)
 
     while await page.querySelector('#duo_iframe'):
         try:
-            if not duo_sent:
-                duo_sent = True
-                await duo_auth(page)
-            else:
-                await duo_wait(page)
+            await duo_auth(page)
         except TimeoutError:
             pass
         except NetworkError:
