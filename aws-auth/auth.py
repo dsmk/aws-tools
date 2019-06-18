@@ -121,22 +121,17 @@ async def main():
     page = await browser.newPage()
     await page.goto(os.environ.get('AWS_LOGIN_URL'))
 
-    while await page.querySelector('#j_username'):
-        await basic_auth(page)
+    try:
+        while await page.querySelector('#j_username'):
+            await basic_auth(page)
 
-    while await page.querySelector('#duo_iframe'):
-        try:
+        if await page.querySelector('#duo_iframe'):
             await duo_auth(page)
-        except TimeoutError:
-            pass
-        except NetworkError:
-            pass
-        except:
-            print('Unidentified error, check screenshot')
-            await page.screenshot({'path': 'error.png'})
-            await browser.close()
-            exit()
-
+    except:
+        print('Unidentified error, check screenshot')
+        await page.screenshot({'path': 'error.png'})
+        await browser.close()
+        exit()
 
     samlElement = await page.waitForSelector('input[name=SAMLResponse]')
     samlValueProperty = await samlElement.getProperty('value')
