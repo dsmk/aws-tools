@@ -3,3 +3,7 @@ version: '3.1'
 services:
   aws:
     build: .
+    volumes:
+      - ./aws-auth/:/aws-auth/
+      - ./bin/:/usr/local/bin/
+      - ./code/:/code/
