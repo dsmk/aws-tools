@@ -24,9 +24,9 @@ async def basic_auth(page):
     password = getpass.getpass()
     print('')
 
-    await page.focus('#j_username')
+    await page.focus('[name*=email], [name*=name]')
     await page.keyboard.type(username)
-    await page.focus('#j_password')
+    await page.focus('[name*=pass]')
     await page.keyboard.type(password)
     await page.evaluate("document.querySelector('button[type=submit]').click()")
     await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
@@ -122,7 +122,7 @@ async def main():
     await page.goto(os.environ.get('AWS_LOGIN_URL'))
 
     try:
-        while await page.querySelector('#j_username'):
+        while await page.querySelector('[name*=email], [name*=name]'):
             await basic_auth(page)
 
         if await page.querySelector('#duo_iframe'):
