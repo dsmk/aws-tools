@@ -191,9 +191,10 @@ async def main():
 
     # Give the user some basic info as to what has just happened
     print('\n\n----------------------------------------------------------------')
-    print('Your new access key pair has been stored in the AWS configuration file {0} under the default profile.'.format(filename))
-    print('Note that it will expire at {0}.'.format(token.credentials.expiration))
-    print('After this time, you may the following command to refresh your access key pair:')
+    print('Your new access key pair has been stored in the AWS configuration \nfile ({0}) under the default profile.'.format(filename))
+    print('\nNote that it will expire at {0}.'.format(token.credentials.expiration))
+    print('After that, you may the following command to refresh your access key pair:')
+    print('')
     print('shib-auth')
     print('----------------------------------------------------------------\n\n')
 
