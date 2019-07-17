@@ -12,7 +12,7 @@ A docker image for running AWS CLI commands.
   docker run --rm -it \
     --volume "$HOME/.aws:/root/.aws" \
     --volume "$(pwd):/code" \
-    bostonuniversity/aws-tools
+    bostonuniversity/aws-tools aws-shell
   ```
 
 - Open bash with a specific aws profile:
@@ -67,6 +67,15 @@ Variable name        | Default value
 AWS_REGION           | `us-east-1`
 AWS_OUTPUT_FORMAT    | `json`
 AWS_LOGIN_URL        | `https://www.bu.edu/awslogin`
+
+## CLI with SSH access
+
+The entrypoint will run the shell inside an ssh-agent.  This simplifies any usage for git, terraform remote commands, or even local ssh connections.  
+This will also be useful if we want to use ansible in the future.
+
+```bash
+ssh-add ssh_key_file
+```
 
 ## Includes
 

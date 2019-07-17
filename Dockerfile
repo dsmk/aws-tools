@@ -17,6 +17,7 @@ RUN set -ex; \
       git \
       jq \
       groff \
+      openssh \
       py-pip \
       python3 \
       chromium \
@@ -58,4 +59,3 @@ ADD bin/ /usr/local/bin/
 
 ENTRYPOINT [ "entrypoint.sh" ]
 CMD [ "/bin/bash" ]
-#CMD [ "aws-shell" ]
