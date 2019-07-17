@@ -5,6 +5,7 @@ ENV PAGER="less -r"
 ENV AWS_REGION="us-east-1"
 ENV AWS_OUTPUT_FORMAT="json"
 ENV AWS_LOGIN_URL="https://www.bu.edu/awslogin"
+ENV TERRAFORM_VERSION "0.12.4"
 
 # Install required packages
 RUN set -ex; \
@@ -39,6 +40,12 @@ RUN sed -i 's/self._url, max_size=None, loop=self._loop)/self._url, max_size=Non
 # Install ecs-cli
 RUN curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest && chmod u+x /usr/local/bin/ecs-cli
 
+# Install terraform
+RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+    && unzip -d /usr/bin terraform.zip \
+    && rm terraform.zip \
+    && echo "complete -C '/usr/bin/terraform' terraform" >>~/.bashrc
+
 # Add aws cli command completion
 RUN echo "complete -C '/usr/bin/aws_completer' aws" >> ~/.bashrc
 
@@ -50,4 +57,5 @@ ADD aws-auth/ /aws-auth/
 ADD bin/ /usr/local/bin/
 
 ENTRYPOINT [ "entrypoint.sh" ]
-CMD [ "aws-shell" ]
+CMD [ "/bin/bash" ]
+#CMD [ "aws-shell" ]
