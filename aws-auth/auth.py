@@ -13,6 +13,18 @@ import re
 from pyppeteer import launch
 from pyppeteer.errors import TimeoutError, NetworkError
 
+# This is hardcoded for now:
+aws_id_to_name = {
+    '372707437925': 'css-poc1',
+    '219010314243': 'css-poc2',
+    "334517691619": 'istcloud-logging',
+    '042435291005': 'istcloud-shared-nonprod',
+    "085327005160": 'istcloud-shared-prod',
+    "770203350335": 'istcloud-app-nonprod',
+    "115619461932": 'istcloud-app-prod',
+    "563583588011": 'istcloud-security'
+}
+
 async def basic_auth(page):
     error = await page.querySelector('.error-box')
     if error:
@@ -170,7 +182,11 @@ async def main():
         i = 0
         print("Please choose the role you would like to assume:")
         for awsrole in awsroles:
-            print('[', i, ']: ', awsrole.split(',')[0])
+            roleline = awsrole.split(',')[0]
+            # get the account number so we can determine a human readable name
+            acctname = roleline.split(':')[4]
+            acctname = aws_id_to_name.get(acctname, acctname)
+            print('[', i, ':', acctname, ']: ', roleline)
             i += 1
         print("Selection: ", end="")
         selectedroleindex = input()
