@@ -188,7 +188,13 @@ async def main():
 
     # Use the assertion to get an AWS STS token using Assume Role with SAML
     conn = boto.sts.connect_to_region(region)
-    token = conn.assume_role_with_saml(role_arn, principal_arn, samlValue)
+
+    # Try longer lifetime but fall back to a shorter lifetime in case
+    # the role only accepts a shorter lifetime.
+    try:
+        token = conn.assume_role_with_saml(role_arn, principal_arn, samlValue, duration_seconds=36000)
+    except:
+        token = conn.assume_role_with_saml(role_arn, principal_arn, samlValue)
 
     config.set('default', 'aws_access_key_id', token.credentials.access_key)
     config.set('default', 'aws_secret_access_key', token.credentials.secret_key)
