@@ -93,14 +93,26 @@ async def duo_wait(page, last_message=''):
     except TimeoutError:
         await duo_wait(page, last_message)
 
+def find_file_in_list (list):
+    """find_file_in_list: returns the first file in the list that exists
+        mainly for the determining which name to use for chrome
+    """
+    for file in list:
+        print(file)
+        if os.path.exists(file):
+            return file
+
 async def main():
     # region: The default AWS region that this script will connect
     # to for all API calls
-    region = os.environ.get('AWS_REGION')
+    region = os.environ.get('AWS_REGION', "us-east-1")
 
     # output format: The AWS CLI output format that will be configured in the
     # saml profile (affects subsequent CLI calls)
     outputformat = os.environ.get('AWS_OUTPUT_FORMAT')
+
+    # The login URL we need to go to
+    login_url = os.environ.get('AWS_LOGIN_URL', "https://www.bu.edu/awslogin")
 
     # awsconfigfile: The file where this script will store the temp
     # credentials under the saml profile
@@ -125,13 +137,16 @@ async def main():
         with open(filename, 'w+') as configfile:
             config.write(configfile)
 
+    # determine path to Chrome/Chromium browser
+    browser_path = find_file_in_list( [ '/usr/bin/chromium', '/usr/bin/chromium-browser'])
+
     browser = await launch(
         headless=True,
-        executablePath="/usr/bin/chromium-browser",
+        executablePath= browser_path,
         args=['--no-sandbox', '--disable-gpu']
     )
     page = await browser.newPage()
-    await page.goto(os.environ.get('AWS_LOGIN_URL'))
+    await page.goto(login_url)
 
     try:
         while await page.querySelector('[name*=email], [name*=name]'):
