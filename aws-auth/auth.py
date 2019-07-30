@@ -17,12 +17,12 @@ from pyppeteer.errors import TimeoutError, NetworkError
 aws_id_to_name = {
     '372707437925': 'css-poc1',
     '219010314243': 'css-poc2',
-    "334517691619": 'istcloud-logging',
-    '042435291005': 'istcloud-shared-nonprod',
-    "085327005160": 'istcloud-shared-prod',
-    "770203350335": 'istcloud-app-nonprod',
-    "115619461932": 'istcloud-app-prod',
-    "563583588011": 'istcloud-security'
+    "334517691619": 'logging',
+    '042435291005': 'shared-nonprod',
+    "085327005160": 'shared-prod',
+    "770203350335": 'app-nonprod',
+    "115619461932": 'app-prod',
+    "563583588011": 'security'
 }
 
 async def basic_auth(page):
