@@ -41,7 +41,7 @@ async def basic_auth(page):
     await page.focus('[name*=pass]')
     await page.keyboard.type(password)
     await page.evaluate("document.querySelector('button[type=submit]').click()")
-    await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
+    await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 150000 })
 
 async def get_duo_message(duo):
     message = await duo.querySelector('#messages-view')
@@ -89,7 +89,7 @@ async def duo_wait(page, last_message=''):
     last_message = message
 
     try:
-        await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 3000 })
+        await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 30000 })
     except TimeoutError:
         await duo_wait(page, last_message)
 
