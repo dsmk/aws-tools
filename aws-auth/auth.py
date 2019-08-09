@@ -98,7 +98,6 @@ def find_file_in_list (list):
         mainly for the determining which name to use for chrome
     """
     for file in list:
-        print(file)
         if os.path.exists(file):
             return file
 
