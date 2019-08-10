@@ -33,6 +33,7 @@ RUN pip3 install --upgrade \
       aws-shell \
       awsebcli \
       boto==2.49.0 \
+      rdk \
       pyppeteer==0.0.25
 
 # Hand-patch the issue with Network Timeouts, see https://github.com/miyakogi/pyppeteer/pull/160
@@ -46,6 +47,8 @@ RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_V
     && unzip -d /usr/bin terraform.zip \
     && rm terraform.zip \
     && echo "complete -C '/usr/bin/terraform' terraform" >>~/.bashrc
+
+RUN apk add vim
 
 # Add aws cli command completion
 RUN echo "complete -C '/usr/bin/aws_completer' aws" >> ~/.bashrc
