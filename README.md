@@ -16,10 +16,15 @@ You can use this image to access Shibboleth-protected accounts.
 To create a temporary session, just run `shib-auth` inside the container:
 
 ```bash
- docker run --rm -it --volume "$HOME/.aws:/root/.aws" bostonuniversity/aws-tools shib-auth
+docker run --rm -it --volume "$HOME/.aws:/root/.aws" bostonuniversity/aws-tools shib-auth
 ```
 
-It is suggested to wrap the command above as an alias.
+It is suggested to wrap the command above as an alias:
+
+```bash
+echo "alias awslogin='docker run --rm -it --volume \"$HOME/.aws:/root/.aws\" bostonuniversity/aws-tools shib-auth'" >> ~/.bashrc
+# Source the file or re-login to your host
+```
 
 This session will only be available for a few hours but you can alway run that
 command again to create a new one.
