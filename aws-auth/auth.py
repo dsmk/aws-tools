@@ -80,11 +80,11 @@ async def duo_wait(page, last_message=''):
     except TimeoutError:
         await duo_wait(page, last_message)
 
-async def is_saml_available(page):
-    return True if await page.querySelector('input[name=SAMLResponse]') else False
-
 async def is_duo_available(page):
     return True if await page.querySelector('#duo_iframe') else False
+
+async def is_saml_available(page):
+    return True if await page.querySelector('input[name=SAMLResponse]') else False
 
 async def main():
     # region: The default AWS region that this script will connect
@@ -135,17 +135,12 @@ async def main():
                 # When Duo is configured to automatically send push,
                 # saml may be already available at this step or will
                 # soon become available
-                if not await is_saml_available(page):
-                    if await is_duo_available(page):
-                        duo = await get_duo(page)
-                        message = await get_duo_message(duo)
-                        if message:
-                            print(message)
-                    else:
-                        raise ex
+                if not await is_saml_available(page) and not await is_duo_available(page):
+                    raise ex
 
         if await is_duo_available(page):
             await duo_auth(page)
+
     except Exception as ex:
         print('Unidentified error, check screenshot. Error message: ' + str(ex))
         await page.screenshot({'path': 'error.png'})
