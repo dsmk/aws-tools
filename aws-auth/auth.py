@@ -100,6 +100,11 @@ def find_file_in_list (list):
     for file in list:
         if os.path.exists(file):
             return file
+async def is_duo_available(page):
+    return True if await page.querySelector('#duo_iframe') else False
+
+async def is_saml_available(page):
+    return True if await page.querySelector('input[name=SAMLResponse]') else False
 
 async def main():
     # region: The default AWS region that this script will connect
@@ -154,13 +159,22 @@ async def main():
     await page.goto(login_url)
 
     try:
-        while await page.querySelector('[name*=email], [name*=name]'):
+        while not await is_saml_available(page) and await page.querySelector('[name*=email], [name*=name]'):
             await basic_auth(page)
+            try:
+                await page.waitForNavigation({ 'waitUntil': 'networkidle0', 'timeout': 15000 })
+            except TimeoutError as ex:
+                # When Duo is configured to automatically send push,
+                # saml may be already available at this step or will
+                # soon become available
+                if not await is_saml_available(page) and not await is_duo_available(page):
+                    raise ex
 
-        if await page.querySelector('#duo_iframe'):
+        if await is_duo_available(page):
             await duo_auth(page)
-    except:
-        print('Unidentified error, check screenshot')
+
+    except Exception as ex:
+        print('Unidentified error, check screenshot. Error message: ' + str(ex))
         await page.screenshot({'path': 'error.png'})
         await browser.close()
         exit()
