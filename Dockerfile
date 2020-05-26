@@ -1,4 +1,5 @@
-FROM alpine:3.8
+#FROM alpine:3.8
+FROM alpine
 
 # Configure less
 ENV PAGER="less -r"
@@ -21,6 +22,7 @@ RUN set -ex; \
       py-pip \
       python3 \
       chromium \
+      gcc python3-dev libffi \
       udev \
       ttf-freefont \
       nodejs \
@@ -37,21 +39,21 @@ RUN pip3 install --upgrade \
       pyppeteer==0.0.25
 
 # Hand-patch the issue with Network Timeouts, see https://github.com/miyakogi/pyppeteer/pull/160
-RUN sed -i 's/self._url, max_size=None, loop=self._loop)/self._url, max_size=None, loop=self._loop, ping_interval=None, ping_timeout=None)/' /usr/lib/python3.6/site-packages/pyppeteer/connection.py
+#RUN sed -i 's/self._url, max_size=None, loop=self._loop)/self._url, max_size=None, loop=self._loop, ping_interval=None, ping_timeout=None)/' /usr/lib/python3.6/site-packages/pyppeteer/connection.py
 
 # Install ecs-cli
-RUN curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest && chmod u+x /usr/local/bin/ecs-cli
+#RUN curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest && chmod u+x /usr/local/bin/ecs-cli
 
 # Install terraform
-RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-    && unzip -d /usr/bin terraform.zip \
-    && rm terraform.zip \
-    && echo "complete -C '/usr/bin/terraform' terraform" >>~/.bashrc
+#RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+#    && unzip -d /usr/bin terraform.zip \
+#    && rm terraform.zip \
+#    && echo "complete -C '/usr/bin/terraform' terraform" >>~/.bashrc
 
-RUN apk add vim
+#RUN apk add vim
 
 # Add aws cli command completion
-RUN echo "complete -C '/usr/bin/aws_completer' aws" >> ~/.bashrc
+#RUN echo "complete -C '/usr/bin/aws_completer' aws" >> ~/.bashrc
 
 RUN mkdir /code
 WORKDIR /code
